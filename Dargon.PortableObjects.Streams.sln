@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.PortableObject.Streams", "Dargon.PortableObject.Streams.csproj", "{49882B74-813D-462C-89EF-1DDF4142D663}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.PortableObjects.Streams", "Dargon.PortableObjects.Streams.csproj", "{49882B74-813D-462C-89EF-1DDF4142D663}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.PortableObject.Streams.Tests", "Tests\Dargon.PortableObject.Streams.Tests.csproj", "{761F1227-C34D-432E-8673-7149ED2199F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dargon.PortableObjects.Streams.Tests", "Tests\Dargon.PortableObjects.Streams.Tests.csproj", "{761F1227-C34D-432E-8673-7149ED2199F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

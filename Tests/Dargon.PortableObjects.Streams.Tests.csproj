@@ -6,8 +6,8 @@
     <ProjectGuid>{761F1227-C34D-432E-8673-7149ED2199F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dargon.PortableObject.Streams</RootNamespace>
-    <AssemblyName>Dargon.PortableObject.Streams.Tests</AssemblyName>
+    <RootNamespace>Dargon.PortableObjects.Streams</RootNamespace>
+    <AssemblyName>Dargon.PortableObjects.Streams.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -86,9 +86,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dargon.PortableObject.Streams.csproj">
+    <ProjectReference Include="..\Dargon.PortableObjects.Streams.csproj">
       <Project>{49882B74-813D-462C-89EF-1DDF4142D663}</Project>
-      <Name>Dargon.PortableObject.Streams</Name>
+      <Name>Dargon.PortableObjects.Streams</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

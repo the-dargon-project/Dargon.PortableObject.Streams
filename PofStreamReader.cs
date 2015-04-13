@@ -2,13 +2,11 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Dargon.PortableObjects;
 using ItzWarty.IO;
 using ItzWarty.Threading;
 using Nito.AsyncEx;
 
-
-namespace Dargon.PortableObject.Streams {
+namespace Dargon.PortableObjects.Streams {
    public interface PofStreamReader : IDisposable {
       object Read();
       Task<object> ReadAsync();

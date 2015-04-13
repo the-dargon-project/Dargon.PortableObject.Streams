@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ImpromptuInterface.Dynamic;
-using ItzWarty.Collections;
 using ItzWarty.Threading;
 using NMockito;
 using Xunit;
 
-namespace Dargon.PortableObject.Streams {
+namespace Dargon.PortableObjects.Streams {
    public class PofDispatcherTest : NMockitoInstance {
       [Mock] private readonly PofStreamReader pofStreamReader = null;
 

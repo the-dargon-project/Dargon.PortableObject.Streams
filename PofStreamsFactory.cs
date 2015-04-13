@@ -1,10 +1,8 @@
 ﻿using System.IO;
-using System.Threading;
-using Dargon.PortableObjects;
 using ItzWarty.IO;
 using ItzWarty.Threading;
 
-namespace Dargon.PortableObject.Streams {
+namespace Dargon.PortableObjects.Streams {
    public interface PofStreamsFactory {
       PofStream CreatePofStream(Stream stream);
       PofStream CreatePofStream(IStream stream);

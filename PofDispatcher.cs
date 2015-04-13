@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using ItzWarty;
 using ItzWarty.Collections;
 using ItzWarty.Threading;
-using Nito.AsyncEx;
 using NLog;
 
-namespace Dargon.PortableObject.Streams {
+namespace Dargon.PortableObjects.Streams {
    public interface PofDispatcher : IDisposable {
       void RegisterHandler(Type t, Action<object> handler);
       void RegisterHandler<T>(Action<T> handler);

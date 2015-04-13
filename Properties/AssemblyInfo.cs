@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Dargon.PortableObject.Streams")]
+[assembly: AssemblyTitle("Dargon.PortableObjects.Streams")]
 [assembly: AssemblyDescription("Dargon Portable Object Stream Helpers")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The Dargon Project")]
-[assembly: AssemblyProduct("Dargon.PortableObject.Streams")]
+[assembly: AssemblyProduct("Dargon.PortableObjects.Streams")]
 [assembly: AssemblyCopyright("Copyright © The Dargon Project 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -1,13 +1,11 @@
-﻿using System.IO;
-using System.Linq;
-using Dargon.PortableObjects;
+﻿using System.Linq;
 using ItzWarty;
 using ItzWarty.IO;
 using ItzWarty.Threading;
 using NMockito;
 using Xunit;
 
-namespace Dargon.PortableObject.Streams {
+namespace Dargon.PortableObjects.Streams {
    public class PofStreamsIT : NMockitoInstance {
       private readonly IStreamFactory streamFactory;
       private readonly IThreadingProxy threadingProxy;

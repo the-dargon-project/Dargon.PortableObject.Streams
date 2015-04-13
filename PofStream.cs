@@ -1,10 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.IO.Pipes;
-using ItzWarty;
 using ItzWarty.IO;
 
-namespace Dargon.PortableObject.Streams {
+namespace Dargon.PortableObjects.Streams {
    public interface PofStream : IDisposable {
       PofStreamReader Reader { get; }
       PofStreamWriter Writer { get; }
