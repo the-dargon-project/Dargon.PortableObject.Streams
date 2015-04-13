@@ -21,7 +21,7 @@ namespace Dargon.PortableObjects.Streams {
       private readonly PofStreamReader reader;
       private readonly IConcurrentDictionary<Type, Action<object>> handlersByType;
       private readonly ICancellationTokenSource dispatcherTaskCancellationTokenSource;
-      private readonly Task dispatcherTask;
+      private Task dispatcherTask;
 
       public PofDispatcherImpl(
          IThreadingProxy threadingProxy,
@@ -35,7 +35,6 @@ namespace Dargon.PortableObjects.Streams {
          this.handlersByType = handlersByType;
 
          this.dispatcherTaskCancellationTokenSource = threadingProxy.CreateCancellationTokenSource();
-         this.dispatcherTask = new Task(Run, dispatcherTaskCancellationTokenSource.Token.__InnerToken);
       }
 
       public void RegisterHandler(Type t, Action<object> handler) {
@@ -47,7 +46,7 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       public void Start() {
-         this.dispatcherTask.Start();
+         this.dispatcherTask = Run();
       }
 
       private async Task Run() {
@@ -82,7 +81,9 @@ namespace Dargon.PortableObjects.Streams {
 
       public void Dispose() {
          dispatcherTaskCancellationTokenSource.Cancel();
-         dispatcherTask.Wait();
+         if (dispatcherTask != null) {
+            dispatcherTask.Wait();
+         }
          reader.Dispose();
       }
    }
