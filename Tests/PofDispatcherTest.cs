@@ -29,6 +29,7 @@ namespace Dargon.PortableObjects.Streams {
 
          testObj.RegisterHandler<A>(dummy.HandleA);
          testObj.RegisterHandler<B>(dummy.HandleB);
+         testObj.RegisterShutdownHandler(dummy.HandleShutdown);
 
          var messagesProcessedLatch = new CountdownEvent(1);
 
@@ -44,6 +45,7 @@ namespace Dargon.PortableObjects.Streams {
          AssertTrue(messagesProcessedLatch.Wait(TimeSpan.FromSeconds(5)));
          Verify(dummy, Once(), Whenever()).HandleA(a);
          Verify(dummy, Once(), AfterPrevious()).HandleB(b);
+         Verify(dummy, Once(), AfterPrevious()).HandleShutdown();
          Verify(pofStreamReader, Once(), AfterPrevious()).Dispose();
          Verify(pofStreamReader, Times(3)).ReadAsync(Any<ICancellationToken>());
          VerifyNoMoreInteractions();
@@ -56,6 +58,7 @@ namespace Dargon.PortableObjects.Streams {
       public interface DummyClass {
          void HandleA(A parameter);
          void HandleB(B parameter);
+         void HandleShutdown();
       }
    }
 }

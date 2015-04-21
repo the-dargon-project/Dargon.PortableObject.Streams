@@ -10,6 +10,7 @@ namespace Dargon.PortableObjects.Streams {
    public interface PofDispatcher : IDisposable {
       void RegisterHandler(Type t, Action<object> handler);
       void RegisterHandler<T>(Action<T> handler);
+      void RegisterShutdownHandler(Action handler);
 
       void Start();
    }
@@ -21,18 +22,20 @@ namespace Dargon.PortableObjects.Streams {
       private readonly PofStreamReader reader;
       private readonly IConcurrentDictionary<Type, Action<object>> handlersByType;
       private readonly ICancellationTokenSource dispatcherTaskCancellationTokenSource;
+      private readonly IConcurrentSet<Action> shutdownHandlers;
       private Task dispatcherTask;
 
       public PofDispatcherImpl(
          IThreadingProxy threadingProxy,
          PofStreamReader reader
-      ) : this(threadingProxy, reader, new ConcurrentDictionary<Type, Action<object>>()) {
+      ) : this(threadingProxy, reader, new ConcurrentDictionary<Type, Action<object>>(), new ConcurrentSet<Action>()) {
       }
 
-      public PofDispatcherImpl(IThreadingProxy threadingProxy, PofStreamReader reader, IConcurrentDictionary<Type, Action<object>> handlersByType) {
+      public PofDispatcherImpl(IThreadingProxy threadingProxy, PofStreamReader reader, IConcurrentDictionary<Type, Action<object>> handlersByType, IConcurrentSet<Action> shutdownHandlers) {
          this.threadingProxy = threadingProxy;
          this.reader = reader;
          this.handlersByType = handlersByType;
+         this.shutdownHandlers = shutdownHandlers;
 
          this.dispatcherTaskCancellationTokenSource = threadingProxy.CreateCancellationTokenSource();
       }
@@ -43,6 +46,10 @@ namespace Dargon.PortableObjects.Streams {
 
       public void RegisterHandler<T>(Action<T> handler) {
          this.handlersByType.TryAdd(typeof(T), x => handler((T)x));
+      }
+
+      public void RegisterShutdownHandler(Action handler) {
+         this.shutdownHandlers.Add(handler);
       }
 
       public void Start() {
@@ -75,6 +82,7 @@ namespace Dargon.PortableObjects.Streams {
             logger.Error("Dispatcher caught unexpected exception", e);
             Console.WriteLine(e);
          } finally {
+            shutdownHandlers.ForEach(x => x.Invoke());
             reader.Dispose();
          }
       }
