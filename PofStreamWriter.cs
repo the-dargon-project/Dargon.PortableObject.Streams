@@ -17,6 +17,7 @@ namespace Dargon.PortableObjects.Streams {
       private readonly AsyncLock mutex = new AsyncLock();
       private readonly IPofSerializer serializer;
       private readonly IStream stream;
+      private bool disposed = false;
 
       public PofStreamWriterImpl(IPofSerializer serializer, IStream stream) {
          this.serializer = serializer;
@@ -42,7 +43,10 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       public void Dispose() {
-         stream.Dispose();
+         if (!disposed) {
+            disposed = true;
+            stream.Dispose();
+         }
       }
    }
 }

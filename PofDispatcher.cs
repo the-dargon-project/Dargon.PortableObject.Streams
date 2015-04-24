@@ -24,6 +24,7 @@ namespace Dargon.PortableObjects.Streams {
       private readonly ICancellationTokenSource dispatcherTaskCancellationTokenSource;
       private readonly IConcurrentSet<Action> shutdownHandlers;
       private Task dispatcherTask;
+      private bool disposed = false;
 
       public PofDispatcherImpl(
          IThreadingProxy threadingProxy,
@@ -88,11 +89,14 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       public void Dispose() {
-         dispatcherTaskCancellationTokenSource.Cancel();
-         if (dispatcherTask != null) {
-            dispatcherTask.Wait();
+         if (!disposed) {
+            disposed = true;
+            dispatcherTaskCancellationTokenSource.Cancel();
+            if (dispatcherTask != null) {
+               dispatcherTask.Wait();
+            }
+            reader.Dispose();
          }
-         reader.Dispose();
       }
    }
 }

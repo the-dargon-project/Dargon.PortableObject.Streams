@@ -11,6 +11,7 @@ namespace Dargon.PortableObjects.Streams {
       private readonly IStream stream;
       private readonly PofStreamReader reader;
       private readonly PofStreamWriter writer;
+      private bool disposed = false;
 
       public PofStreamImpl(IStream stream, PofStreamReader reader, PofStreamWriter writer) {
          this.stream = stream;
@@ -22,9 +23,12 @@ namespace Dargon.PortableObjects.Streams {
       public PofStreamWriter Writer { get { return writer; } }
 
       public void Dispose() {
-         stream.Dispose();
-         reader.Dispose();
-         writer.Dispose();
+         if (!disposed) {
+            disposed = true;
+            stream.Dispose();
+            reader.Dispose();
+            writer.Dispose();
+         }
       }
    }
 }
