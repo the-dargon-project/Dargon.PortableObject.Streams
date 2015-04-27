@@ -63,8 +63,8 @@ namespace Dargon.PortableObjects.Streams {
             while (!cancellationToken.IsCancellationRequested) {
                var obj = await reader.ReadAsync(cancellationToken);
                var type = obj.GetType();
-               var handler = handlersByType.GetValueOrDefault(type);
-               if (handler != null) {
+               Action<object> handler;
+               if (handlersByType.TryGetValue(type, out handler)) {
                   handler(obj);
                } else {
                   throw new DispatcherUnhandledPortableObjectException(type);
