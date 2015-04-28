@@ -35,9 +35,9 @@ namespace Dargon.PortableObjects.Streams {
       public async Task<object> ReadAsync(ICancellationToken cancellationToken) {
          using (await asyncLock.LockAsync(cancellationToken == null ? CancellationToken.None : cancellationToken.__InnerToken)) {
             const int kInt32ByteCount = 4;
-            byte[] lengthBuffer = await ReadBytesAsync(kInt32ByteCount);
+            byte[] lengthBuffer = await ReadBytesAsync(kInt32ByteCount, cancellationToken);
             var length = BitConverter.ToInt32(lengthBuffer, 0);
-            byte[] dataBuffer = await ReadBytesAsync(length);
+            byte[] dataBuffer = await ReadBytesAsync(length, cancellationToken);
             using (var ms = new MemoryStream(dataBuffer))
             using (var msReader = new BinaryReader(ms)) {
                return serializer.Deserialize(msReader, SerializationFlags.Lengthless, null);
@@ -45,11 +45,11 @@ namespace Dargon.PortableObjects.Streams {
          }
       }
 
-      private async Task<byte[]> ReadBytesAsync(int count) {
+      private async Task<byte[]> ReadBytesAsync(int count, ICancellationToken cancellationToken) {
          byte[] buffer = new byte[count];
          int bytesReadTotal = 0;
          while(bytesReadTotal != count) {
-            var bytesRead = await stream.ReadAsync(buffer, bytesReadTotal, count - bytesReadTotal);
+            var bytesRead = await stream.ReadAsync(buffer, bytesReadTotal, count - bytesReadTotal, cancellationToken);
             bytesReadTotal += bytesRead;
             if (bytesRead == 0) {
                throw new EndOfStreamException();

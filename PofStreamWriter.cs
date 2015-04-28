@@ -37,7 +37,7 @@ namespace Dargon.PortableObjects.Streams {
          using (var writer = new BinaryWriter(ms)) {
             serializer.Serialize(writer, obj);
             using (await mutex.LockAsync(cancellationToken == null ? CancellationToken.None : cancellationToken.__InnerToken)) {
-               await stream.WriteAsync(ms.GetBuffer(), 0, (int)ms.Length);
+               await stream.WriteAsync(ms.GetBuffer(), 0, (int)ms.Length, cancellationToken);
             }
          }
       }
