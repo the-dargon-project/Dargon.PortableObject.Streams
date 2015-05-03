@@ -1,10 +1,20 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ItzWarty.IO;
+using ItzWarty.Threading;
 
 namespace Dargon.PortableObjects.Streams {
    public interface PofStream : IDisposable {
       PofStreamReader Reader { get; }
       PofStreamWriter Writer { get; }
+
+      object Read();
+      Task<object> ReadAsync();
+      Task<object> ReadAsync(ICancellationToken cancellationToken);
+
+      void Write(object obj);
+      Task WriteAsync(object obj);
+      Task WriteAsync(object obj, ICancellationToken cancellationToken);
    }
 
    public class PofStreamImpl : PofStream {
@@ -19,8 +29,16 @@ namespace Dargon.PortableObjects.Streams {
          this.writer = writer;
       }
 
-      public PofStreamReader Reader { get { return reader; } }
-      public PofStreamWriter Writer { get { return writer; } }
+      public PofStreamReader Reader => reader;
+      public PofStreamWriter Writer => writer;
+
+      public object Read() => reader.Read();
+      public Task<object> ReadAsync() => reader.ReadAsync();
+      public Task<object> ReadAsync(ICancellationToken cancellationToken) => reader.ReadAsync(cancellationToken);
+
+      public void Write(object obj) => writer.Write(obj);
+      public Task WriteAsync(object obj) => writer.WriteAsync(obj);
+      public Task WriteAsync(object obj, ICancellationToken cancellationToken) => writer.WriteAsync(obj, cancellationToken);
 
       public void Dispose() {
          if (!disposed) {
