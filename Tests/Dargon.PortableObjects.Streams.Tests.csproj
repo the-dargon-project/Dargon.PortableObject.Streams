@@ -76,8 +76,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="PofDispatcherTest.cs" />
+    <Compile Include="PofDispatcherIT.cs" />
+    <Compile Include="PofDispatcherTests.cs" />
     <Compile Include="PofStreamsIT.cs" />
+    <Compile Include="PofStreamTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

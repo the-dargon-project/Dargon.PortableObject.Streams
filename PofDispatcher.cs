@@ -18,11 +18,11 @@ namespace Dargon.PortableObjects.Streams {
    public class PofDispatcherImpl : PofDispatcher {
       private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-      private readonly IThreadingProxy threadingProxy;
       private readonly PofStreamReader reader;
       private readonly IConcurrentDictionary<Type, Action<object>> handlersByType;
-      private readonly ICancellationTokenSource dispatcherTaskCancellationTokenSource;
       private readonly IConcurrentSet<Action> shutdownHandlers;
+      private readonly ICancellationTokenSource dispatcherTaskCancellationTokenSource;
+
       private Task dispatcherTask;
       private bool disposed = false;
 
@@ -32,13 +32,23 @@ namespace Dargon.PortableObjects.Streams {
       ) : this(threadingProxy, reader, new ConcurrentDictionary<Type, Action<object>>(), new ConcurrentSet<Action>()) {
       }
 
-      public PofDispatcherImpl(IThreadingProxy threadingProxy, PofStreamReader reader, IConcurrentDictionary<Type, Action<object>> handlersByType, IConcurrentSet<Action> shutdownHandlers) {
-         this.threadingProxy = threadingProxy;
+      public PofDispatcherImpl(
+         IThreadingProxy threadingProxy, 
+         PofStreamReader reader, 
+         IConcurrentDictionary<Type, Action<object>> handlersByType, 
+         IConcurrentSet<Action> shutdownHandlers
+      ) : this(
+         reader,
+         handlersByType,
+         shutdownHandlers,
+         threadingProxy.CreateCancellationTokenSource()
+      ) { }
+
+      public PofDispatcherImpl(PofStreamReader reader, IConcurrentDictionary<Type, Action<object>> handlersByType, IConcurrentSet<Action> shutdownHandlers, ICancellationTokenSource dispatcherTaskCancellationTokenSource) {
          this.reader = reader;
          this.handlersByType = handlersByType;
          this.shutdownHandlers = shutdownHandlers;
-
-         this.dispatcherTaskCancellationTokenSource = threadingProxy.CreateCancellationTokenSource();
+         this.dispatcherTaskCancellationTokenSource = dispatcherTaskCancellationTokenSource;
       }
 
       public void RegisterHandler(Type t, Action<object> handler) {

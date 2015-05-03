@@ -6,7 +6,7 @@ using NMockito;
 using Xunit;
 
 namespace Dargon.PortableObjects.Streams {
-   public class PofDispatcherTest : NMockitoInstance {
+   public class PofDispatcherIT : NMockitoInstance {
       [Mock] private readonly PofStreamReader pofStreamReader = null;
 
       private readonly A a = new A();
@@ -15,7 +15,7 @@ namespace Dargon.PortableObjects.Streams {
 
       private PofDispatcherImpl testObj;
 
-      public PofDispatcherTest() {
+      public PofDispatcherIT() {
          IThreadingFactory threadingFactory = new ThreadingFactory();
          ISynchronizationFactory synchronizationFactory = new SynchronizationFactory();
          IThreadingProxy threadingProxy = new ThreadingProxy(threadingFactory, synchronizationFactory);
