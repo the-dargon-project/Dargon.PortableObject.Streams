@@ -57,6 +57,34 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       [Fact]
+      public void Read_Generic_DelegatesToReaderTest() {
+         object returnValue = new object();
+         When(reader.Read<object>()).ThenReturn(returnValue);
+         AssertEquals(returnValue, testObj.Read<object>());
+         Verify(reader).Read<object>();
+         VerifyNoMoreInteractions();
+      }
+
+      [Fact]
+      public void ReadAsync_Generic_DelegatesToReaderTest() {
+         Task<object> returnValue = Task.FromResult(new object());
+         When(reader.ReadAsync<object>()).ThenReturn(returnValue);
+         AssertEquals(returnValue, testObj.ReadAsync<object>());
+         Verify(reader).ReadAsync<object>();
+         VerifyNoMoreInteractions();
+      }
+
+      [Fact]
+      public void ReadAsync_Generic_WithCancellationToken_DelegatesToReaderTest() {
+         var cancellationToken = CreateMock<ICancellationToken>();
+         Task<object> returnValue = Task.FromResult(new object());
+         When(reader.ReadAsync<object>(cancellationToken)).ThenReturn(returnValue);
+         AssertEquals(returnValue, testObj.ReadAsync<object>(cancellationToken));
+         Verify(reader).ReadAsync<object>(cancellationToken);
+         VerifyNoMoreInteractions();
+      }
+
+      [Fact]
       public void Write_DelegatesToReaderTest() {
          object writtenValue = new object();
          testObj.Write(writtenValue);

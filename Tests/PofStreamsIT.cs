@@ -1,9 +1,12 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using ItzWarty;
 using ItzWarty.IO;
 using ItzWarty.Threading;
 using NMockito;
 using Xunit;
+using Nito;
+using Nito.AsyncEx;
 
 namespace Dargon.PortableObjects.Streams {
    public class PofStreamsIT : NMockitoInstance {
@@ -35,8 +38,7 @@ namespace Dargon.PortableObjects.Streams {
 
             var factory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, serializer);
             var pofStream = factory.CreatePofStream(ms);
-            var reader = pofStream.Reader;
-            var tasks = Util.Generate(kMessageCount, i => reader.ReadAsync());
+            var tasks = Util.Generate(kMessageCount / 2, i => pofStream.ReadAsync<TestClass>());
             tasks.Select(t => (TestClass)t.Result).ForEach(x => AssertEquals(x.Value, kMessage));
          }
       }
@@ -49,8 +51,7 @@ namespace Dargon.PortableObjects.Streams {
          using (var ms = streamFactory.CreateMemoryStream()) {
             var factory = new PofStreamsFactoryImpl(threadingProxy, streamFactory, serializer);
             var pofStream = factory.CreatePofStream(ms);
-            var writer = pofStream.Writer;
-            var writingTasks = Util.Generate(kMessageCount, i => writer.WriteAsync(new TestClass(kMessage)));
+            var writingTasks = Util.Generate(kMessageCount, i => pofStream.WriteAsync(new TestClass(kMessage)));
             writingTasks.ForEach(x => x.Wait());
 
             ms.Position = 0;

@@ -25,7 +25,7 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       public void Write(object obj) {
-         serializer.Serialize(stream.__Stream, obj);
+         serializer.Serialize(stream.Writer, obj);
       }
       
       public Task WriteAsync(object obj) {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,10 @@ namespace Dargon.PortableObjects.Streams {
       object Read();
       Task<object> ReadAsync();
       Task<object> ReadAsync(ICancellationToken cancellationToken);
+
+      T Read<T>();
+      Task<T> ReadAsync<T>();
+      Task<T> ReadAsync<T>(ICancellationToken cancellationToken);
    }
 
    public class PofStreamReaderImpl : PofStreamReader {
@@ -43,6 +48,25 @@ namespace Dargon.PortableObjects.Streams {
                return serializer.Deserialize(msReader, SerializationFlags.Lengthless, null);
             }
          }
+      }
+
+      public T Read<T>() { return (T)Read(); }
+
+      public Task<T> ReadAsync<T>() { return ReadAsync<T>(null); }
+
+      public Task<T> ReadAsync<T>(ICancellationToken cancellationToken) {
+         var tcs = new TaskCompletionSource<T>();
+         ReadAsync(cancellationToken).ContinueWith(t => {
+            if (t.IsCanceled) {
+               tcs.TrySetCanceled();
+            } else if (t.IsFaulted) {
+               Debug.Assert(t.Exception != null, "t.Exception != null");
+               tcs.TrySetException(t.Exception.InnerExceptions);
+            } else {
+               tcs.TrySetResult((T)t.Result);
+            } 
+         }, TaskContinuationOptions.ExecuteSynchronously);
+         return tcs.Task;
       }
 
       private async Task<byte[]> ReadBytesAsync(int count, ICancellationToken cancellationToken) {

@@ -12,6 +12,10 @@ namespace Dargon.PortableObjects.Streams {
       Task<object> ReadAsync();
       Task<object> ReadAsync(ICancellationToken cancellationToken);
 
+      T Read<T>();
+      Task<T> ReadAsync<T>();
+      Task<T> ReadAsync<T>(ICancellationToken cancellationToken);
+
       void Write(object obj);
       Task WriteAsync(object obj);
       Task WriteAsync(object obj, ICancellationToken cancellationToken);
@@ -35,6 +39,10 @@ namespace Dargon.PortableObjects.Streams {
       public object Read() => reader.Read();
       public Task<object> ReadAsync() => reader.ReadAsync();
       public Task<object> ReadAsync(ICancellationToken cancellationToken) => reader.ReadAsync(cancellationToken);
+
+      public T Read<T>() => reader.Read<T>();
+      public Task<T> ReadAsync<T>() => reader.ReadAsync<T>();
+      public Task<T> ReadAsync<T>(ICancellationToken cancellationToken) => reader.ReadAsync<T>(cancellationToken);
 
       public void Write(object obj) => writer.Write(obj);
       public Task WriteAsync(object obj) => writer.WriteAsync(obj);
