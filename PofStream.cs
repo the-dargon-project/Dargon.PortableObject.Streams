@@ -51,7 +51,7 @@ namespace Dargon.PortableObjects.Streams {
       public void Dispose() {
          if (!disposed) {
             disposed = true;
-            stream.Dispose();
+            stream?.Dispose();
             reader.Dispose();
             writer.Dispose();
          }

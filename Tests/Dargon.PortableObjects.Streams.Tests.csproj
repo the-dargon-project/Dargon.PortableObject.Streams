@@ -88,6 +88,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="AsymmetricStreamIT.cs" />
     <Compile Include="PofDispatcherIT.cs" />
     <Compile Include="PofDispatcherTests.cs" />
     <Compile Include="PofStreamsIT.cs" />
