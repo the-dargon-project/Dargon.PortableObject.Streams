@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ItzWarty.IO;
 using ItzWarty.Threading;
 using Nito.AsyncEx;
+using NLog;
 
 namespace Dargon.PortableObjects.Streams {
    public interface PofStreamReader : IDisposable {
@@ -19,6 +20,8 @@ namespace Dargon.PortableObjects.Streams {
    }
 
    public class PofStreamReaderImpl : PofStreamReader {
+      private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
       private readonly AsyncLock asyncLock = new AsyncLock();
       private readonly IPofSerializer serializer;
       private readonly IStream stream;
@@ -38,15 +41,20 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       public async Task<object> ReadAsync(ICancellationToken cancellationToken) {
-         using (await asyncLock.LockAsync(cancellationToken == null ? CancellationToken.None : cancellationToken.__InnerToken)) {
-            const int kInt32ByteCount = 4;
-            byte[] lengthBuffer = await ReadBytesAsync(kInt32ByteCount, cancellationToken);
-            var length = BitConverter.ToInt32(lengthBuffer, 0);
-            byte[] dataBuffer = await ReadBytesAsync(length, cancellationToken);
-            using (var ms = new MemoryStream(dataBuffer))
-            using (var msReader = new BinaryReader(ms)) {
-               return serializer.Deserialize(msReader, SerializationFlags.Lengthless, null);
+         try {
+            using (await asyncLock.LockAsync(cancellationToken == null ? CancellationToken.None : cancellationToken.__InnerToken)) {
+               const int kInt32ByteCount = 4;
+               byte[] lengthBuffer = await ReadBytesAsync(kInt32ByteCount, cancellationToken);
+               var length = BitConverter.ToInt32(lengthBuffer, 0);
+               byte[] dataBuffer = await ReadBytesAsync(length, cancellationToken);
+               using (var ms = new MemoryStream(dataBuffer))
+               using (var msReader = new BinaryReader(ms)) {
+                  return serializer.Deserialize(msReader, SerializationFlags.Lengthless, null);
+               }
             }
+         } catch (Exception e) {
+            logger.Error(e);
+            throw;
          }
       }
 

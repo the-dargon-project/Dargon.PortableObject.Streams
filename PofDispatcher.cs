@@ -82,7 +82,7 @@ namespace Dargon.PortableObjects.Streams {
                }
             }
          } catch (SocketException e) {
-            // TODO: Audit Event
+            logger.Error("Caught socket exception", e);
             Console.WriteLine(e);
          } catch (DispatcherUnhandledPortableObjectException e) {
             logger.Error("Dispatcher caught unhandled pof exception", e);
