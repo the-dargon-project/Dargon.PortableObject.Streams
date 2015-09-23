@@ -112,6 +112,7 @@
     <Compile Include="AsymmetricStreamIT.cs" />
     <Compile Include="PofDispatcherIT.cs" />
     <Compile Include="PofDispatcherTests.cs" />
+    <Compile Include="PofStreamReaderImplTests.cs" />
     <Compile Include="PofStreamsIT.cs" />
     <Compile Include="PofStreamTests.cs" />
     <Compile Include="PofStreamWriterImplTests.cs" />

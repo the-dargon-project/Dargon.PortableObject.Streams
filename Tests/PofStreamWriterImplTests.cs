@@ -22,6 +22,11 @@ namespace Dargon.PortableObjects.Streams {
 
          When(stream.Writer).ThenReturn(writer);
       }
+      
+      [Fact]
+      public void Properties_ReflectConstructorArguments_Test() {
+         AssertEquals(stream, testObj.BaseStream);
+      }
 
       [Fact]
       public void Write_DelegatesToSerializer() {

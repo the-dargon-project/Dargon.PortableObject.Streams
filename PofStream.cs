@@ -5,6 +5,7 @@ using ItzWarty.Threading;
 
 namespace Dargon.PortableObjects.Streams {
    public interface PofStream : IDisposable {
+      IStream BaseStream { get; }
       PofStreamReader Reader { get; }
       PofStreamWriter Writer { get; }
 
@@ -33,6 +34,7 @@ namespace Dargon.PortableObjects.Streams {
          this.writer = writer;
       }
 
+      public IStream BaseStream => stream;
       public PofStreamReader Reader => reader;
       public PofStreamWriter Writer => writer;
 

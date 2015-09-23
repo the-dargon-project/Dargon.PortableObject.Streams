@@ -17,13 +17,9 @@ namespace Dargon.PortableObjects.Streams {
       }
 
       [Fact]
-      public void Reader_ReflectsConstructerArgumentsTest() {
+      public void Properties_ReflectConstructerArguments_Test() {
+         AssertEquals(stream, testObj.BaseStream);
          AssertEquals(reader, testObj.Reader);
-         VerifyNoMoreInteractions();
-      }
-
-      [Fact]
-      public void Writer_ReflectsConstructerArgumentsTest() {
          AssertEquals(writer, testObj.Writer);
          VerifyNoMoreInteractions();
       }

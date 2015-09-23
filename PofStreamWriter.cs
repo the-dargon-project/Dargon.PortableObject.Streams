@@ -9,6 +9,8 @@ using NLog;
 
 namespace Dargon.PortableObjects.Streams {
    public interface PofStreamWriter : IDisposable {
+      IStream BaseStream { get; }
+
       void Write(object obj);
       Task WriteAsync(object obj);
       Task WriteAsync(object obj, ICancellationToken cancellationToken);
@@ -27,6 +29,8 @@ namespace Dargon.PortableObjects.Streams {
          this.stream = stream;
       }
 
+      public IStream BaseStream => stream;
+
       public void Write(object obj) {
          serializer.Serialize(stream.Writer, obj);
       }
@@ -40,7 +44,7 @@ namespace Dargon.PortableObjects.Streams {
             using (var ms = new MemoryStream())
             using (var writer = new BinaryWriter(ms)) {
                serializer.Serialize(writer, obj);
-               using (await mutex.LockAsync(cancellationToken == null ? CancellationToken.None : cancellationToken.__InnerToken)) {
+               using (await mutex.LockAsync(cancellationToken?.__InnerToken ?? CancellationToken.None)) {
                   await stream.WriteAsync(ms.GetBuffer(), 0, (int)ms.Length, cancellationToken);
                }
             }

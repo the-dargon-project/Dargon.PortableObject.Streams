@@ -10,6 +10,8 @@ using NLog;
 
 namespace Dargon.PortableObjects.Streams {
    public interface PofStreamReader : IDisposable {
+      IStream BaseStream { get; }
+
       object Read();
       Task<object> ReadAsync();
       Task<object> ReadAsync(ICancellationToken cancellationToken);
@@ -31,6 +33,8 @@ namespace Dargon.PortableObjects.Streams {
          this.serializer = serializer;
          this.stream = stream;
       }
+
+      public IStream BaseStream => stream;
 
       public object Read() {
          return serializer.Deserialize(stream.GetReader());
